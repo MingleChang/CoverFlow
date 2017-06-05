@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class MCCoverFlow;
+@protocol MCCoverFlowDelegate <NSObject>
+
+
+
+@end
+
 @interface MCCoverFlow : UIView
 
 @end

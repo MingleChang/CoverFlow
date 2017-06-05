@@ -206,6 +206,7 @@ static NSString *const CELL_ID = @"MCCoverFlowCell";
     lLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:lLayout];
     self.collectionView.bounces = NO;
+    self.collectionView.scrollsToTop = NO;
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
     [self.collectionView registerClass:[MCCoverFlowCell class] forCellWithReuseIdentifier:CELL_ID];
@@ -220,6 +221,8 @@ static NSString *const CELL_ID = @"MCCoverFlowCell";
     self.sourceCount = self.imageArray.count;
     self.pageIndex = self.sourceCount;
     self.currentIndex = self.pageIndex % self.sourceCount;
+    
+    
 }
 
 @end

@@ -17,6 +17,7 @@
 		82D3E9271EDD9349008BA5A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 82D3E9251EDD9349008BA5A6 /* LaunchScreen.storyboard */; };
 		82D3E9311EDD9429008BA5A6 /* MCCoverFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 82D3E9301EDD9429008BA5A6 /* MCCoverFlowView.m */; };
 		82D3E9341EDD98C8008BA5A6 /* MCCoverFlowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 82D3E9331EDD98C7008BA5A6 /* MCCoverFlowCell.m */; };
+		82ED41F21EE4F40C0020D491 /* MCCoverFlowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 82ED41F11EE4F40C0020D491 /* MCCoverFlowItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,8 @@
 		82D3E9301EDD9429008BA5A6 /* MCCoverFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCCoverFlowView.m; sourceTree = "<group>"; };
 		82D3E9321EDD98C7008BA5A6 /* MCCoverFlowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCCoverFlowCell.h; sourceTree = "<group>"; };
 		82D3E9331EDD98C7008BA5A6 /* MCCoverFlowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCCoverFlowCell.m; sourceTree = "<group>"; };
+		82ED41F01EE4F40C0020D491 /* MCCoverFlowItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MCCoverFlowItem.h; sourceTree = "<group>"; };
+		82ED41F11EE4F40C0020D491 /* MCCoverFlowItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MCCoverFlowItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +59,8 @@
 			children = (
 				825E06341EE110FB00B933D6 /* MCCoverFlow.h */,
 				825E06351EE110FB00B933D6 /* MCCoverFlow.m */,
+				82ED41F01EE4F40C0020D491 /* MCCoverFlowItem.h */,
+				82ED41F11EE4F40C0020D491 /* MCCoverFlowItem.m */,
 			);
 			path = "CoverFlow-ScrollView";
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 			files = (
 				82D3E9341EDD98C8008BA5A6 /* MCCoverFlowCell.m in Sources */,
 				825E06361EE110FB00B933D6 /* MCCoverFlow.m in Sources */,
+				82ED41F21EE4F40C0020D491 /* MCCoverFlowItem.m in Sources */,
 				829B37641EDE51C700EEAEC0 /* MCCoverFlowLayout.m in Sources */,
 				82D3E91F1EDD9349008BA5A6 /* ViewController.m in Sources */,
 				82D3E91C1EDD9349008BA5A6 /* AppDelegate.m in Sources */,

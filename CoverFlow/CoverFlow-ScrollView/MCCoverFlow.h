@@ -11,10 +11,13 @@
 @class MCCoverFlow;
 @protocol MCCoverFlowDelegate <NSObject>
 
-
+- (void)coverFlow:(MCCoverFlow *)view selectedIndex:(NSInteger)index;
+- (void)coverFlow:(MCCoverFlow *)view changeCurrentIndex:(NSInteger)index;
 
 @end
 
 @interface MCCoverFlow : UIView
+
+@property (nonatomic, weak)id<MCCoverFlowDelegate> delegate;
 
 @end

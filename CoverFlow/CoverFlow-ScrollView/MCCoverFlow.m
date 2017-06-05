@@ -25,6 +25,10 @@
 
 @implementation MCCoverFlow
 
+- (void)dealloc {
+    [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
+}
+
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -68,6 +72,7 @@
         lItem.index = i % self.sourceCount;
         [lItem setIndex:i];
         lItem.frame = CGRectMake(i * width, 0, width, height);
+        [lItem addTarget:self action:@selector(coverFlowItemClick:) forControlEvents:UIControlEventTouchUpInside];
         [lItems addObject:lItem];
         [self.scrollView addSubview:lItem];
     }
@@ -94,6 +99,22 @@
     NSInteger index = floor(contentOffset.x / width + 0.5);
     contentOffset.x = width * index;
     [self.scrollView setContentOffset:contentOffset animated:YES];
+}
+
+- (void)endScrollViewAnimation {
+    CGPoint contentOffset = self.scrollView.contentOffset;
+    CGFloat width = [self itemWidth];
+    CGFloat offsetIndex = contentOffset.x / width;
+    NSInteger index = floor(offsetIndex + 0.5);
+    
+    if (index < self.sourceCount ) {
+        index = index + self.sourceCount;
+        [self.scrollView setContentOffset:CGPointMake(index * width, 0) animated:NO];
+    }
+    if (index + 2 > self.sourceCount * 2 ) {
+        index = index - self.sourceCount;
+        [self.scrollView setContentOffset:CGPointMake(index * width, 0) animated:NO];
+    }
 }
 
 - (void)coverFlowItemByOffset:(CGPoint)contentOffset {
@@ -142,6 +163,15 @@
     }
 }
 
+#pragma mark - Event Response
+- (void)coverFlowItemClick:(MCCoverFlowItem *)sender {
+    CGPoint contentOffset = sender.frame.origin;
+    CGFloat width = [self itemWidth];
+    CGFloat offsetIndex = contentOffset.x / width;
+    NSInteger index = floor(offsetIndex + 0.5);
+    [self.scrollView setContentOffset:CGPointMake((index - 1) * width, 0) animated:YES];
+}
+
 #pragma mark - Delegate
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -170,7 +200,7 @@
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    
+    [self endScrollViewAnimation];
 }
 
 #pragma mark - Configure

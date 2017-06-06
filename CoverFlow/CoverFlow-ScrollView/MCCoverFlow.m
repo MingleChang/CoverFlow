@@ -14,7 +14,10 @@
 @interface MCCoverFlow () <UIScrollViewDelegate>
 
 @property (nonatomic, strong)UIScrollView *scrollView;
+
 @property (nonatomic, copy)NSArray<MCCoverFlowItem *> *items;
+
+@property (nonatomic, copy)NSArray *imageArray;
 
 @property (nonatomic, assign)NSInteger duplicate;
 @property (nonatomic, assign)NSInteger pageIndex;
@@ -29,9 +32,10 @@
     [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
 }
 
-- (instancetype)init {
+- (instancetype) initWithImages:(NSArray *)images {
     self = [super init];
     if (self) {
+        self.imageArray = images;
         [self configure];
     }
     return self;
@@ -42,12 +46,13 @@
     self.scrollView.frame = self.bounds;
     CGFloat width = [self itemWidth];
     CGFloat height = self.scrollView.bounds.size.height;
+    CGFloat itemHeight = width * 80 / 125.0;
     NSInteger itemCount = [self itemCount];
     [self.scrollView setContentSize:CGSizeMake(itemCount * width, height)];
     [self.scrollView setContentOffset:CGPointMake((self.currentIndex + self.sourceCount) * width, 0) animated:NO];
     for (NSInteger i = 0; i < self.items.count; i ++) {
         MCCoverFlowItem *item = [self.items objectAtIndex:i];
-        item.frame = CGRectMake(i * width, 0, width, height);
+        item.frame = CGRectMake(i * width, (height - itemHeight) / 2.0, width, itemHeight);
     }
     [self coverFlowItemByOffset:CGPointMake((self.currentIndex + self.sourceCount) * width, 0)];
 }
@@ -68,8 +73,9 @@
     NSInteger itemCount = [self itemCount];
     for (NSInteger i = 0; i < itemCount; i ++) {
         MCCoverFlowItem *lItem = [[MCCoverFlowItem alloc] init];
-        lItem.tag = i;
-        lItem.index = i % self.sourceCount;
+        lItem.tag = i % self.sourceCount;
+        UIImage *lImage = [self.imageArray objectAtIndex:lItem.tag];
+        [lItem setupImage:lImage];
         [lItem setIndex:i];
         lItem.frame = CGRectMake(i * width, 0, width, height);
         [lItem addTarget:self action:@selector(coverFlowItemClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -142,10 +148,11 @@
     NSInteger index = floor(offsetIndex + 0.5);
     if (fabs(offsetIndex - index) < 0.1 && self.pageIndex != index) {
         self.pageIndex = index;
-        NSLog(@"PageIndex:%li",self.pageIndex);
         if (self.pageIndex % self.sourceCount != self.currentIndex) {
             self.currentIndex = self.pageIndex % self.sourceCount;
-            NSLog(@"CurrentIndex:%li",self.currentIndex);
+            if ([self.delegate respondsToSelector:@selector(coverFlow:changeCurrentIndex:)]) {
+                [self.delegate coverFlow:self changeCurrentIndex:(self.currentIndex + 1) % self.sourceCount];
+            }
         }
     }
 }
@@ -170,6 +177,9 @@
     CGFloat offsetIndex = contentOffset.x / width;
     NSInteger index = floor(offsetIndex + 0.5);
     [self.scrollView setContentOffset:CGPointMake((index - 1) * width, 0) animated:YES];
+    if ([self.delegate respondsToSelector:@selector(coverFlow:selectedIndex:)]) {
+        [self.delegate coverFlow:self selectedIndex:sender.tag];
+    }
 }
 
 #pragma mark - Delegate
@@ -181,12 +191,17 @@
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    
+    if ([self.delegate respondsToSelector:@selector(coverFlowWillBeginDragging:)]) {
+        [self.delegate coverFlowWillBeginDragging:self];
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) {
         [self endScrollViewDraggingAndDecelerate];
+    }
+    if ([self.delegate respondsToSelector:@selector(coverFlowDidEndDragging:willDecelerate:)]) {
+        [self.delegate coverFlowDidEndDragging:self willDecelerate:decelerate];
     }
 }
 
@@ -222,7 +237,7 @@
 
 - (void)configureData {
     self.duplicate = 3;
-    self.sourceCount = 3;
+    self.sourceCount = self.imageArray.count;
     self.pageIndex = self.sourceCount;
     self.currentIndex = self.pageIndex % self.sourceCount;
     

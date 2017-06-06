@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface MCCoverFlowItem : UIControl
-@property (nonatomic, assign)NSInteger index;
-
+- (void)setupImage:(UIImage *)image;
 - (void)setIndex:(NSInteger)index;
 @end

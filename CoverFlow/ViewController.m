@@ -10,7 +10,7 @@
 #import "MCCoverFlowView.h"
 #import "MCCoverFlow.h"
 
-@interface ViewController ()<MCCoverFlowViewDelegate>
+@interface ViewController ()<MCCoverFlowViewDelegate, MCCoverFlowDelegate>
 
 @property (nonatomic, strong)MCCoverFlowView *flowView;
 
@@ -29,8 +29,9 @@
     self.flowView.delegate = self;
     [self.view addSubview:self.flowView];
     
-    self.flow = [[MCCoverFlow alloc] init];
+    self.flow = [[MCCoverFlow alloc] initWithImages:@[[UIImage imageNamed:@"0"],[UIImage imageNamed:@"1"],[UIImage imageNamed:@"2"]]];
     self.flow.backgroundColor = [UIColor orangeColor];
+    self.flow.delegate = self;
     [self.view addSubview:self.flow];
 }
 
@@ -47,12 +48,27 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - MCCoverFlowView Delegate
 - (void)coverFlowView:(MCCoverFlowView *)view selectedIndex:(NSInteger)index {
     NSLog(@"Selected:%li",index);
 }
 
 - (void)coverFlowView:(MCCoverFlowView *)view changeCurrentIndex:(NSInteger)index {
     NSLog(@"Current:%li",index);
+}
+
+#pragma mark - MCCoverFlow Delegate
+- (void)coverFlow:(MCCoverFlow *)view selectedIndex:(NSInteger)index {
+    NSLog(@"Selected:%li",index);
+}
+- (void)coverFlow:(MCCoverFlow *)view changeCurrentIndex:(NSInteger)index {
+    NSLog(@"Current:%li",index);
+}
+- (void)coverFlowWillBeginDragging:(MCCoverFlow *)view {
+    
+}
+- (void)coverFlowDidEndDragging:(MCCoverFlow *)view willDecelerate:(BOOL)decelerate {
+    
 }
 
 @end
